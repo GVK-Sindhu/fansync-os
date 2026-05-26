@@ -1,4 +1,4 @@
-# FanTwin AI 🤖🎙️
+# FanTwin AI
 
 > **Autonomous fan engagement and monetization operating system for creators.**
 
@@ -8,7 +8,7 @@ This repository implements a **production-inspired asynchronous worker architect
 
 ---
 
-## 🚀 Product Vision & Capabilities
+## Product Vision & Capabilities
 
 Top creators receive thousands of comments, DMs, and emails daily across Instagram, YouTube, and X (formerly Twitter). The majority of these interactions are left unaddressed due to lack of time. FanTwin AI solves this by deploying a specialized, tone-learning AI twin that parses fan intent, detects high-value sponsor/business inquiries, estimates opportunity values, and generates context-aware replies matching the creator's voice.
 
@@ -19,7 +19,7 @@ Top creators receive thousands of comments, DMs, and emails daily across Instagr
 
 ---
 
-## 🛠️ System Architecture
+##  System Architecture
 
 FanTwin AI is structured as a decoupled, multi-container full-stack monorepo:
 
@@ -41,7 +41,7 @@ graph TD
 
 ---
 
-## 🧠 AI & Memory Architecture
+##  AI & Memory Architecture
 
 ### 1. Ingest & Classification Pipeline
 When a message is ingested into the database:
@@ -78,7 +78,7 @@ To support local development and offline testing:
 
 ---
 
-## ⚡ Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 *   [Node.js v18+](https://nodejs.org)
@@ -155,7 +155,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📊 Developer Dashboard Overview
+## Developer Dashboard Overview
 
 The dashboard split-component structure is structured inside `/frontend/src/components`:
 1.  **AI Inbox Feed:** Interactive feed filters (Platform, Category, Sentiment), priorities tags, diagnostic reasoning panels, monetization cards, and active reply editors (Save, Copy, Send response handles).
@@ -164,7 +164,7 @@ The dashboard split-component structure is structured inside `/frontend/src/comp
 
 ---
 
-## 📈 Scalability Roadmap
+## Scalability Roadmap
 
 1.  **Dead-Letter Queues (DLQ):** Route repeatedly failed queue jobs (e.g. rate-limit or API exhaustion failures) to a DLQ for administrator diagnostics.
 2.  **Horizontal Scale Workers:** Deploy workers inside isolated serverless instances to consume Redis queues concurrently under heavy spikes.
