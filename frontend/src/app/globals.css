@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #060608;
+  --foreground: #f4f4f5;
+  --border: rgba(255, 255, 255, 0.08);
+  --card: rgba(13, 13, 17, 0.7);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(13, 13, 17, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+.glass-panel-interactive {
+  background: rgba(13, 13, 17, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Glowing Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.3;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+  }
+}
+
+.glow-indicator {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Custom Gradients */
+.text-glow-gradient {
+  background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-btn-gradient {
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.glow-btn-gradient:hover {
+  opacity: 0.95;
+  box-shadow: 0 4px 25px rgba(168, 85, 247, 0.45);
+  transform: translateY(-1px);
+}

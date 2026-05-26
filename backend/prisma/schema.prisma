@@ -1,0 +1,124 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+model Creator {
+  id           String          @id @default(uuid())
+  email        String          @unique
+  name         String
+  handle       String          @unique
+  avatarUrl    String?
+  niche        String          @default("Tech & AI")
+  createdAt    String
+  toneProfile  ToneProfile?
+  memories     CreatorMemory[]
+  messages     FanMessage[]
+  analytics    AnalyticsSnapshot[]
+}
+
+model ToneProfile {
+  id               String   @id @default(uuid())
+  creatorId        String   @unique
+  creator          Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  averageLength    Int      @default(80)
+  emojiFrequency   Float    @default(0.1) // ratio of emojis per word
+  slangUsage       Float    @default(0.2) // 0-1 scale
+  professionalism  Float    @default(0.5) // 0-1 scale
+  humor            Float    @default(0.5) // 0-1 scale
+  topEmojis        String   @default("🔥,✨,🚀")
+  styleDescription String   @default("Engaging, friendly, tech-savvy, and helpful.")
+  rules            String   @default("Use emojis; keep replies energetic; pitch the premium Discord community when relevant.")
+  updatedAt        String
+}
+
+model CreatorMemory {
+  id         String                  @id @default(uuid())
+  creatorId  String
+  creator    Creator                 @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  type       String                  // "tweet", "caption", "reply", "transcript"
+  content    String                  // The text source
+  createdAt  String
+  embedding  CreatorMemoryEmbedding?
+}
+
+model CreatorMemoryEmbedding {
+  id        String        @id @default(uuid())
+  memoryId  String        @unique
+  memory    CreatorMemory @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  embedding Unsupported("vector(1536)")
+}
+
+
+model FanMessage {
+  id                    String                   @id @default(uuid())
+  creatorId             String
+  creator               Creator                  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  platform              String                   // "instagram", "youtube", "twitter"
+  senderUsername        String
+  senderName            String?
+  senderAvatarUrl       String?
+  text                  String
+  timestamp             String
+  status                String                   @default("unread") // "unread", "replied", "archived"
+  analysis              AiAnalysis?
+  monetization          MonetizationOpportunity?
+  replies               AiReplyDraft[]
+}
+
+model AiAnalysis {
+  id             String     @id @default(uuid())
+  messageId      String     @unique
+  message        FanMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  sentiment      String     // "positive", "neutral", "negative"
+  category       String     // "loyal_fan", "casual_follower", "potential_subscriber", "sponsor_inquiry", "spam_troll", "vip_supporter"
+  priorityScore  Int        // 0 to 100
+  reasoning      String
+  hasMonetization Boolean   @default(false)
+  analyzedAt     String
+}
+
+model MonetizationOpportunity {
+  id             String     @id @default(uuid())
+  messageId      String     @unique
+  message        FanMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type           String     // "sponsorship", "merch", "subscription", "collaboration", "custom"
+  estimatedValue Float      @default(0.0)
+  status         String     @default("identified") // "identified", "contacted", "converted", "dismissed"
+  actionPlan     String
+  detectedAt     String
+}
+
+model AiReplyDraft {
+  id             String     @id @default(uuid())
+  messageId      String
+  message        FanMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type           String     // "short", "engaging", "premium_conversion"
+  text           String
+  status         String     @default("draft") // "draft", "edited", "sent"
+  createdAt      String
+}
+
+model AnalyticsSnapshot {
+  id                    String   @id @default(uuid())
+  creatorId             String
+  creator               Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  timestamp             String
+  sentimentPositivePct  Float
+  sentimentNeutralPct   Float
+  sentimentNegativePct  Float
+  loyalFanCount         Int
+  casualFollowerCount   Int
+  potentialSubCount     Int
+  sponsorInquiryCount   Int
+  spamTrollCount        Int
+  vipSupporterCount     Int
+  totalRevenuePotential Float
+  conversionRate        Float
+}
